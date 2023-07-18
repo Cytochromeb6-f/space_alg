@@ -5,7 +5,7 @@ use std::ops::{Add, Sub, Mul, Neg};
 type Real = f32; 
 
 #[derive(PartialEq, Clone, Copy)]
-struct Multivector {
+pub struct Multivector {
     blades: [Real; 8]
 }
 
