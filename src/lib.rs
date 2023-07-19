@@ -41,7 +41,7 @@ impl Multivector {
         // This multivector when normalized to unit length (non-vector components are set to zero)
         let inv_len: Real = (self.comps[1].powi(2) + self.comps[2].powi(2) + self.comps[3].powi(2)).powf(-0.5);
 
-        Multivector::new([0., inv_len*self.comps[0], inv_len*self.comps[1], inv_len*self.comps[2], 0., 0., 0., 0.])
+        Multivector::new([0., inv_len*self.comps[1], inv_len*self.comps[2], inv_len*self.comps[3], 0., 0., 0., 0.])
     }
 }
 
@@ -174,6 +174,8 @@ impl fmt::Display for Multivector {
                     output = format!("{}-{}", output, blade);
                 } else if coeff == 1. {
                     output = format!("{}{}", output, blade);
+                } else {
+                    output = format!("{}{}{}", output, coeff, blade);
                 }
                 is_zero = false
             } else {
