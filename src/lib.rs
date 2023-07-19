@@ -1,5 +1,5 @@
 use std::fmt;   
-use std::ops::{Add, Sub, Mul, BitXor, Neg};
+use std::ops::{Add, Sub, AddAssign, Mul, BitXor, Neg};
 
 
 type Real = f32; 
@@ -66,14 +66,23 @@ impl Sub for Multivector {
 
     fn sub(self, right: Multivector) -> Multivector {
         Multivector::new([
-            self.comps[0]-right.comps[0], self.comps[1]-right.comps[1],
-            self.comps[2]-right.comps[2], self.comps[3]-right.comps[3],
-            self.comps[4]-right.comps[4], self.comps[5]-right.comps[5],
-            self.comps[6]-right.comps[6], self.comps[7]-right.comps[7]
+            self.comps[0] - right.comps[0], self.comps[1] - right.comps[1],
+            self.comps[2] - right.comps[2], self.comps[3] - right.comps[3],
+            self.comps[4] - right.comps[4], self.comps[5] - right.comps[5],
+            self.comps[6] - right.comps[6], self.comps[7] - right.comps[7]
         ])
     }
 }
-// impl AddAssign
+impl AddAssign for Multivector {
+    fn add_assign(&mut self, right: Multivector) {
+        *self = Multivector::new([
+            self.comps[0] + right.comps[0], self.comps[1] + right.comps[1],
+            self.comps[2] + right.comps[2], self.comps[3] + right.comps[3],
+            self.comps[4] + right.comps[4], self.comps[5] + right.comps[5],
+            self.comps[6] + right.comps[6], self.comps[7] + right.comps[7]
+        ])
+    }
+}
 
 impl Mul for Multivector {
     // Clifford product in R^{3,0}
@@ -98,6 +107,7 @@ impl Mul for Multivector {
         Multivector::new(ab)
     }
 }
+
 impl BitXor for Multivector {
     // Exterior product in R^{3,0}
     type Output = Multivector;
