@@ -15,7 +15,7 @@ fn mv_testing() {
 
 fn unitvector_testing() {
     let a = Multivector::new_grade1([1., 2., 5.]);
-    let b = a.unitvector();
+    let b = a.unit_vector();
 
     println!("{}",a);
     println!("{}",b);

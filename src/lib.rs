@@ -22,6 +22,10 @@ impl Multivector {
         Multivector::new([0., comp[0], comp[1], comp[2], 0., 0., 0., 0.])
     }
 
+    pub fn new_grade2(comp: [Real; 3]) -> Multivector {
+        Multivector::new([0., 0., 0., 0., comp[0], comp[1], comp[2], 0.])
+    }
+
     pub fn scaled(self, scalar: Real) -> Multivector {
         Multivector::new([
             scalar*self.comps[0], scalar*self.comps[1], scalar*self.comps[2], scalar*self.comps[3],
@@ -37,11 +41,18 @@ impl Multivector {
         ])
     }
 
-    pub fn unitvector(self) -> Multivector {
-        // This multivector when normalized to unit length (non-vector components are set to zero)
+    pub fn unit_vector(self) -> Multivector {
+        // This multivector when normalized to unit length (first, non-vector components are set to zero)
         let inv_len: Real = (self.comps[1].powi(2) + self.comps[2].powi(2) + self.comps[3].powi(2)).powf(-0.5);
 
         Multivector::new([0., inv_len*self.comps[1], inv_len*self.comps[2], inv_len*self.comps[3], 0., 0., 0., 0.])
+    }
+
+    pub fn unit_bivector(self) -> Multivector {
+        // This multivector when normalized to unit length (first, non-bivector components are set to zero)
+        let inv_area: Real = (self.comps[4].powi(2) + self.comps[5].powi(2) + self.comps[6].powi(2)).powf(-0.5);
+
+        Multivector::new([0., 0., 0., 0., inv_area*self.comps[4], inv_area*self.comps[5], inv_area*self.comps[6], 0.])
     }
 }
 
