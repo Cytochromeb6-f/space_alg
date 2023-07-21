@@ -1,5 +1,5 @@
 use std::fmt;   
-use std::ops::{Add, Sub, AddAssign, Mul, BitXor, Neg};
+use std::ops::{Neg, Add, Sub, AddAssign, Mul, BitXor, Shl, Shr};
 
 
 type Real = f32;
@@ -75,6 +75,18 @@ impl Multivector {
     }
 }
 
+impl Neg for Multivector {
+    type Output = Multivector;
+
+    fn neg(self) -> Multivector {
+        let a = self.comps;
+        let new_comps: [Real; 8] = [
+            -a[0], -a[1], -a[2], -a[3], -a[4], -a[5], -a[6], -a[7] 
+        ];
+        
+        Multivector::new(new_comps)
+    }
+}
 
 impl Add for Multivector {
     // Sum of two multivectors
@@ -115,7 +127,7 @@ impl AddAssign for Multivector {
 }
 
 impl Mul for Multivector {
-    // Clifford product in R^{3,0}
+    // Clifford product in R^{3,0}:     u*v
     type Output = Multivector;
 
     fn mul(self, right: Multivector) -> Multivector {
@@ -139,7 +151,7 @@ impl Mul for Multivector {
 }
 
 impl BitXor for Multivector {
-    // Exterior product in R^{3,0}
+    // Exterior product in R^{3,0}:     u^v
     type Output = Multivector;
 
     fn bitxor(self, right: Multivector) -> Multivector {
@@ -162,18 +174,55 @@ impl BitXor for Multivector {
     }
 }
 
-impl Neg for Multivector {
+impl Shl for Multivector {
+    // Left inner product in R^{3,0}:     u<<v
     type Output = Multivector;
 
-    fn neg(self) -> Multivector {
+    fn shl(self, right: Multivector) -> Multivector {
         let a = self.comps;
-        let new_comps: [Real; 8] = [
-            -a[0], -a[1], -a[2], -a[3], -a[4], -a[5], -a[6], -a[7] 
+        let b = right.comps;
+
+        // This is from the multiplication table
+        let ab: [Real; 8] = [
+            a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3] - a[4]*b[4] - a[5]*b[5] - a[6]*b[6] - a[7]*b[7],
+            a[0]*b[1] - a[2]*b[4] - a[3]*b[5] - a[6]*b[7],
+            a[0]*b[2] + a[1]*b[4] - a[3]*b[6] + a[5]*b[7],
+            a[0]*b[3] + a[1]*b[5] + a[2]*b[6] - a[4]*b[7],
+            a[0]*b[4] + a[3]*b[7],
+            a[0]*b[5] - a[2]*b[7],
+            a[0]*b[6] + a[1]*b[7],
+            a[0]*b[7] 
         ];
         
-        Multivector::new(new_comps)
+        Multivector::new(ab)
     }
 }
+
+impl Shr for Multivector {
+    // Right inner product in R^{3,0}:     u>>v
+    type Output = Multivector;
+
+    fn shr(self, right: Multivector) -> Multivector {
+        let a = self.comps;
+        let b = right.comps;
+
+        // This is from the multiplication table
+        let ab: [Real; 8] = [
+            a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3] - a[4]*b[4] - a[5]*b[5] - a[6]*b[6] - a[7]*b[7],
+            a[1]*b[0] + a[4]*b[2] + a[5]*b[3] - a[7]*b[6],
+            a[2]*b[0] - a[4]*b[1] + a[6]*b[3] + a[7]*b[5],
+            a[3]*b[0] - a[5]*b[1] - a[6]*b[2] - a[7]*b[4],
+            a[4]*b[0] + a[7]*b[3],
+            a[5]*b[0] - a[7]*b[2],
+            a[6]*b[0] + a[7]*b[1],
+            a[7]*b[0]
+        ];
+        
+        Multivector::new(ab)
+    }
+}
+
+
 
 impl fmt::Display for Multivector {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
