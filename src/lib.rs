@@ -2,7 +2,22 @@ use std::fmt;
 use std::ops::{Add, Sub, AddAssign, Mul, BitXor, Neg};
 
 
-type Real = f32; 
+type Real = f32;
+
+// Constants
+
+pub const ZERO: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 0., 0., 0., ]};
+pub const ONE: Multivector = Multivector{comps: [1., 0., 0., 0., 0., 0., 0., 0., ]};
+pub const E_X: Multivector = Multivector{comps: [0., 1., 0., 0., 0., 0., 0., 0., ]};
+pub const E_Y: Multivector = Multivector{comps: [0., 0., 1., 0., 0., 0., 0., 0., ]};
+pub const E_Z: Multivector = Multivector{comps: [0., 0., 0., 1., 0., 0., 0., 0., ]};
+pub const E_XY: Multivector = Multivector{comps: [0., 0., 0., 0., 1., 0., 0., 0., ]};
+pub const E_XZ: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 1., 0., 0., ]};
+pub const E_YZ: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 0., 1., 0., ]};
+pub const E_XYZ: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 0., 0., 1., ]};
+
+
+
 #[derive(PartialEq, Clone, Copy)]
 pub struct Multivector {
     comps: [Real; 8]
@@ -163,7 +178,7 @@ impl Neg for Multivector {
 impl fmt::Display for Multivector {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         
-        let blade_nms: [&str; 8] = ["", "e_x", "e_y","e_z", "e_xe_y", "e_xe_z", "e_ye_z", "e_xe_ye_z"];
+        let blade_nms: [&str; 8] = ["", "e_x", "e_y","e_z", "e_xy", "e_xz", "e_yz", "e_xyz"];
 
         let mut is_zero = true;
 
