@@ -29,20 +29,20 @@ impl Multivector {
         Multivector {comps: comps}
     }
     
-    pub fn comps(self) -> [Real; 8] {
-        self.comps
-    }
-    
-    pub fn new_grade0(comp: Real) -> Multivector {
+    pub const fn new_grade0(comp: Real) -> Multivector {
         Multivector::new([comp, 0., 0., 0., 0., 0., 0., 0.])
     }
-
+    
     pub fn new_grade1(comp: [Real; 3]) -> Multivector {
         Multivector::new([0., comp[0], comp[1], comp[2], 0., 0., 0., 0.])
     }
-
-    pub fn new_grade2(comp: [Real; 3]) -> Multivector {
+    
+    pub const fn new_grade2(comp: [Real; 3]) -> Multivector {
         Multivector::new([0., 0., 0., 0., comp[0], comp[1], comp[2], 0.])
+    }
+    
+    pub fn comps(self) -> [Real; 8] {
+        self.comps
     }
 
     pub fn is_zero(self) -> bool {
