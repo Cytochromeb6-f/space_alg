@@ -25,7 +25,7 @@ pub struct Multivector {
 
 #[allow(dead_code)]
 impl Multivector {
-    pub fn new(comps: [Real; 8]) -> Multivector {
+    pub const fn new(comps: [Real; 8]) -> Multivector {
         Multivector {comps: comps}
     }
     
@@ -43,6 +43,15 @@ impl Multivector {
 
     pub fn new_grade2(comp: [Real; 3]) -> Multivector {
         Multivector::new([0., 0., 0., 0., comp[0], comp[1], comp[2], 0.])
+    }
+
+    pub fn is_zero(self) -> bool {
+        for comp in self.comps {
+            if comp != 0. {
+                return false
+            }
+        }
+        true
     }
 
     pub fn scaled(self, scalar: Real) -> Multivector {
