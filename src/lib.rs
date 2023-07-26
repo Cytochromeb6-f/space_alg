@@ -1,6 +1,6 @@
 use std::fmt;   
 use std::ops::{Neg, Add, Sub, AddAssign, Mul, BitXor, Shl, Shr};
-
+use serde::{Serialize, Deserialize};
 
 type Real = f32;
 
@@ -18,7 +18,7 @@ pub const E_XYZ: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 0., 0., 1
 
 
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Serialize, Deserialize)]
 pub struct Multivector {
     comps: [Real; 8]
 }
