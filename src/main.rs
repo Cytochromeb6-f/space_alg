@@ -23,7 +23,7 @@ fn unitvector_testing() {
 
 fn main() {
 
-    // mv_testing();
+    mv_testing();
 
     unitvector_testing();
 

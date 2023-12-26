@@ -2,10 +2,15 @@ use std::fmt;
 use std::ops::{Neg, Add, Sub, AddAssign, Mul, BitXor, Shl, Shr};
 use serde::{Serialize, Deserialize};
 
+
+
+// "Field" used for the vector space
 type Real = f32;
 
-// Constants
 
+
+
+// Constant multivectors
 pub const ZERO: Multivector = Multivector{comps: [0., 0., 0., 0., 0., 0., 0., 0., ]};
 pub const ONE: Multivector = Multivector{comps: [1., 0., 0., 0., 0., 0., 0., 0., ]};
 pub const E_X: Multivector = Multivector{comps: [0., 1., 0., 0., 0., 0., 0., 0., ]};
@@ -23,29 +28,35 @@ pub struct Multivector {
     comps: [Real; 8]
 }
 
-#[allow(dead_code)]
+
 impl Multivector {
     pub const fn new(comps: [Real; 8]) -> Multivector {
+        // New multivector with specified components
         Multivector {comps: comps}
     }
     
     pub const fn new_grade0(comp: Real) -> Multivector {
+        // New scalar multivector
         Multivector::new([comp, 0., 0., 0., 0., 0., 0., 0.])
     }
     
     pub const fn new_grade1(comp: [Real; 3]) -> Multivector {
+        // New grade 1 (vector) multivector
         Multivector::new([0., comp[0], comp[1], comp[2], 0., 0., 0., 0.])
     }
     
     pub const fn new_grade2(comp: [Real; 3]) -> Multivector {
+        // New grade 2 (bivector) multivector
         Multivector::new([0., 0., 0., 0., comp[0], comp[1], comp[2], 0.])
     }
     
     pub fn comps(self) -> [Real; 8] {
+        // Get components of this multivector as an array
         self.comps
     }
 
     pub fn is_zero(self) -> bool {
+        // Check if this multivector is zero
         for comp in self.comps {
             if comp != 0. {
                 return false
@@ -55,6 +66,7 @@ impl Multivector {
     }
 
     pub fn scaled(self, scalar: Real) -> Multivector {
+        // Get a scaled version of this multivector
         Multivector::new([
             scalar*self.comps[0], scalar*self.comps[1], scalar*self.comps[2], scalar*self.comps[3],
             scalar*self.comps[4], scalar*self.comps[5], scalar*self.comps[6], scalar*self.comps[7]
@@ -85,6 +97,7 @@ impl Multivector {
 }
 
 impl Neg for Multivector {
+    // Get this multivector with switched sign
     type Output = Multivector;
 
     fn neg(self) -> Multivector {
